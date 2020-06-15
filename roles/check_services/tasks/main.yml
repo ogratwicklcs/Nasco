@@ -4,7 +4,7 @@
   register: services
 
 - set_fact:
-    service_list: "{{ services | json_query('[].stdout_lines[]') }}" 
+    service_list: "{{ services.stdout_lines | replace(' ','') }}" 
 - name: create temp directory
   win_file:
     path: C:\TEMP
@@ -12,7 +12,7 @@
 
 - name: create file
   win_copy: 
-    content: "{{ services.stdout_lines }}"
+    content: "{{ service_list }}"
     dest: C:\TEMP\services.txt 
 
 - name: output services list
