@@ -1,0 +1,12 @@
+---
+- name: search for windows updates
+  win_updates:
+    category_names:
+      - SecurityUpdates
+      - CriticalUpdates
+    state: searched
+  register: win_updates
+
+- name: output win updates
+  debug:
+    var: win_updates

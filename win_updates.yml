@@ -1,0 +1,8 @@
+---
+- name: Search for windows updates
+  hosts: update
+  gather_facts: yes
+  tasks:
+  - name: including service role
+    import_role:
+      name: check_updates
