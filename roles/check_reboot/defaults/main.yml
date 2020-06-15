@@ -1,7 +1,7 @@
 ---
-sccm: 
-  dir: ROOT\ccm\Client
-  name: DetermineifRebootPending
-updates: 
-  dir: HKLM:\SOFTWARE\Microsoft\Updates
-  name: UpdateExeVolatile
+# sccm: 
+#   dir: ROOT\ccm\Client
+#   name: DetermineifRebootPending
+# updates: 
+#   dir: HKLM:\SOFTWARE\Microsoft\Updates
+#   name: UpdateExeVolatile
