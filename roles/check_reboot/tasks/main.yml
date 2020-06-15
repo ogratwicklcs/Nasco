@@ -1,14 +1,13 @@
 - name: view registry keys to see if server needs auto reboot
   win_reg_stat: 
-    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired
+    path: HKLM\Software\Microsoft\Updates
     name: UpdateExeVolatile
   register: current_auto
   ignore_errors: yes 
 
 - name: view registry keys to see if server needs auto reboot
   win_reg_stat:
-    path: HKLM:\SOFTWARE\Microsoft\Updates\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update
-    name: RebootRequired
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired
   register: view_updates
   ignore_errors: yes 
 
@@ -20,8 +19,7 @@
 - name: output servers
   debug:
     var: ansible_hostname
-  when: shell_out|lower == "true" or view_updates.exists|lower == "true" or current_auto|lower == "true"
-
+  when: shell_out|lower == "true" or view_updates.exists|lower == "true" or current_auto.value >= "0"
 
 
 # - name: Output of the keys sccm
