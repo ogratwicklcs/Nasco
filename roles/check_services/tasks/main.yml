@@ -4,7 +4,7 @@
   register: services
 
 - set_fact:
-    service_list: "{{ services.stdout_lines | to_nice_yaml }}" 
+    service_list: "{{ services | json_query('[].stdout_lines[]') }}" 
 
 - name: output services list
   debug: 
