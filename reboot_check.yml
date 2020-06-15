@@ -1,0 +1,8 @@
+---
+- name: Checks for reboot and Services
+  hosts: update
+  gather_facts: yes
+  tasks:
+  - name: including reboot role
+    import_role:
+      name: check_reboot

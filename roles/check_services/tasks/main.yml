@@ -1,0 +1,3 @@
+---
+- name: Query all Automatic services
+  shell: get-service | where {$_.StartType -eq "Automatic"} | select name
