@@ -1,0 +1,20 @@
+- name: view registry keys to see if server needs a reboot from sccm 
+  win_reg_stat: 
+    path: "{{ sccm.dir }}"
+    name: "{{ sccm.name }}"
+  register: view_sccm
+  ignore_errors: yes 
+
+- name: View if sccm keys are defined
+  win_reg_stat:
+    path: "{{ updates.dir }}"
+    name: "{{ updates.name }}"
+  register: view_updates
+  ignore_errors: yes 
+
+- name: Output of the keys sccm
+  debug:
+    var: view_sccm
+- name: Output of the keys updates
+  debug:
+    var: view_updates
