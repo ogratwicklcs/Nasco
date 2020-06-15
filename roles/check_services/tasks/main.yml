@@ -1,3 +1,8 @@
 ---
 - name: Query all Automatic services
-  shell: get-service | where {$_.StartType -eq "Automatic"} | select name
+  shell: get-service | where {$_.StartType -eq "Automatic"} | select name | ft -HideTableHeaders
+  register: services
+
+- name: output services list
+  debug: 
+    var: services.stdout_lines
