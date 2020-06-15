@@ -1,6 +1,6 @@
 ---
 - name: Query all Automatic services
-  shell: get-service | where {$_.StartType -eq "Automatic"} | select name | ft -HideTableHeaders
+  win_shell: get-service | where {$_.StartType -eq "Automatic"} | select name | ft -HideTableHeaders
   register: services
 
 - name: output services list
