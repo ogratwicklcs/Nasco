@@ -2,7 +2,7 @@
   win_reg_stat: 
     path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired
     name: UpdateExeVolatile
-  register: view_sccm
+  register: current_auto
   ignore_errors: yes 
 
 - name: View if sccm keys are defined
@@ -13,15 +13,23 @@
   ignore_errors: yes 
 
 - name: wmi command
-  shell: Invoke-WmiMethod -ComputerName $MachineName -Namespace root\ccm\clientsdk -Class CCM_ClientUtilities -Name DetermineIfRebootPending -ErrorAction SilentlyContinue ).RebootPending
+  win_shell: (Invoke-WmiMethod -Namespace root\ccm\clientsdk -Class CCM_ClientUtilities -Name DetermineIfRebootPending -ErrorAction SilentlyContinue ).RebootPending
   register: shell_out
+  ignore_errors: yes
 
-- name: Output of the keys sccm
+- name: output servers
   debug:
-    var: view_sccm
-- name: Output of the keys updates
-  debug:
-    var: view_updates
-- name: shell out
-  debug:
-    var: shell_out
+    var: ansible_hostname
+  when: shell_out|lower == "true" or view_updates.exists|lower == "true" or current_auto|lower == "true"
+
+
+
+# - name: Output of the keys sccm
+#   debug:
+#     var: view_sccm
+# - name: Output of the keys updates
+#   debug:
+#     var: view_updates
+# - name: shell out
+#   debug:
+#     var: shell_out
