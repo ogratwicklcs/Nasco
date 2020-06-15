@@ -15,6 +15,12 @@
     content: "{{ service_list }}"
     dest: C:\TEMP\services.txt 
 
+- name: start service
+  win_service:
+    state: started
+    name: "{{ item }}"
+  loop: "{{ service_list }}"
+
 - name: output services list
   debug: 
     var: service_list
