@@ -25,6 +25,6 @@
     state: started
     name: "{{ item }}"
   loop: "{{ service_list }}"
-  when: service_list != ""
+  when: service_list | length > 0
 
 
