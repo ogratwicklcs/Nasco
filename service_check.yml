@@ -5,4 +5,4 @@
   tasks:
   - name: including service role
     import_role:
-      name: service_check
+      name: check_services
