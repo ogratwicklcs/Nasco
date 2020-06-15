@@ -5,14 +5,14 @@
   register: current_auto
   ignore_errors: yes 
 
-- name: View if sccm keys are defined
+- name: view registry keys to see if server needs auto reboot
   win_reg_stat:
-    path: HKLM:\SOFTWARE\Microsoft\Updates\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\
+    path: HKLM:\SOFTWARE\Microsoft\Updates\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update
     name: RebootRequired
   register: view_updates
   ignore_errors: yes 
 
-- name: wmi command
+- name: check if SCCM client indicates that server needs a restart through WMI command
   win_shell: (Invoke-WmiMethod -Namespace root\ccm\clientsdk -Class CCM_ClientUtilities -Name DetermineIfRebootPending -ErrorAction SilentlyContinue ).RebootPending
   register: shell_out
   ignore_errors: yes
