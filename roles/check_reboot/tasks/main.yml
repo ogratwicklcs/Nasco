@@ -1,6 +1,6 @@
 - name: view registry keys to see if server needs auto reboot
   win_reg_stat: 
-    path: HKLM\Software\Microsoft\Updates
+    path: HKLM:\Software\Microsoft\Updates
     name: UpdateExeVolatile
   register: current_auto
   ignore_errors: yes 
