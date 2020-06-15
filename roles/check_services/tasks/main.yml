@@ -5,6 +5,15 @@
 
 - set_fact:
     service_list: "{{ services | json_query('[].stdout_lines[]') }}" 
+- name: create temp directory
+  win_file:
+    path: C:\TEMP
+    state: directory
+
+- name: create file
+  win_copy: 
+    content: "{{ services.stdout_lines }}"
+    dest: C:\TEMP\services.txt 
 
 - name: output services list
   debug: 
