@@ -7,7 +7,8 @@
 
 - name: view registry keys to see if server needs auto reboot
   win_reg_stat:
-    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update
+    name: RebootRequired
   register: view_updates
   ignore_errors: yes 
 
