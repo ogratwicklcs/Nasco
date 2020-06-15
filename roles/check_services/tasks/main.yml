@@ -3,6 +3,9 @@
   win_shell: get-service | where {$_.StartType -eq "Automatic"} | select name | ft -HideTableHeaders
   register: services
 
+- set_fact:
+    service_list: services.stdout_lines | to_nice_yaml
+
 - name: output services list
   debug: 
-    var: services.stdout_lines
+    var: service_list
