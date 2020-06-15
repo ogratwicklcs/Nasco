@@ -3,6 +3,6 @@
   hosts: update
   gather_facts: yes
   tasks:
-  - name: including service role
+  - name: including updates role
     import_role:
       name: check_updates
