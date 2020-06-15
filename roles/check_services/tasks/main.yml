@@ -5,7 +5,7 @@
 
 - set_fact:
     service_list: "{{ services.stdout_lines | replace(' ','') }}" 
-    
+
 # - name: create temp directory
 #   win_file:
 #     path: C:\TEMP
@@ -25,6 +25,6 @@
     state: started
     name: "{{ item }}"
   loop: "{{ service_list }}"
-  when: service_list == ""
+  when: service_list != ""
 
 
