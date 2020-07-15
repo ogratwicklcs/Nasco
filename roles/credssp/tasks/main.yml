@@ -1,0 +1,6 @@
+---
+
+- name: Apply credssp transport cert and settings with Ansible script
+  script:
+    script: windows_transport.ps1 -EnableCredSSP
+  become: yes
