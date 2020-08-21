@@ -10,7 +10,9 @@
         resource_name: UpdateServicesApprovalRule 
         Name: 'Critical Updates'
         #RunRuleNow: yes
-        Classifications: E6CF1350-C01B-414D-A61F-263D14D133B4
+        Classifications: 
+        - E6CF1350-C01B-414D-A61F-263D14D133B4
+        - 0FA1201D-4330-4FA8-8AE9-B877473B6441
         Enabled: true
         RunRuleNow: true
       delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
