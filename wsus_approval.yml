@@ -6,7 +6,7 @@
 
     - name: Setup the xWebAdministration module
       win_psmodule:
-        name: MSFT_WindowsOptionalFeature
+        name: UpdateServicesDsc
         state: present
 
 
