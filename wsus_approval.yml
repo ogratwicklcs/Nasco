@@ -5,11 +5,11 @@
   tasks:
     - debug:
         msg: "{{ query('inventory_hostnames', 'wsus') }}"
-    - name: Install WSUS DSC modules
-      win_psmodule:
-        name: UpdateServicesDsc
-        state: present
-      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
+    # - name: Install WSUS DSC modules
+    #   win_psmodule:
+    #     name: UpdateServicesDsc
+    #     state: present
+    #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
     - name: Make sure servers in WSUS Target group
       win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
