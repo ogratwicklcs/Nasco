@@ -14,5 +14,5 @@
     - name: Make sure servers in WSUS Target group
       win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
       loop: "{{ groups['patching'] }}"
-
+      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
