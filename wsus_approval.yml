@@ -13,7 +13,7 @@
     - name: run approval rule
       win_dsc:
         resource_name: UpdateServicesApprovalRule 
-        Ensure: yes
+        Ensure: Present
         Name: Default
         RunRuleNow: True
         Classifications: 
