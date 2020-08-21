@@ -3,9 +3,13 @@
   hosts: all
   gather_facts: yes
   tasks:
+    - win_psmodule:
+        name: UpdateServicesDsc
+        repostiroy: PSGallery
+        state: latest
     - name: run approval rule
       win_dsc:
-        resource_name: UpdateServicesDsc  #UpdateServicesApprovalRule 
+        resource_name: UpdateServicesApprovalRule 
         Ensure: yes
         Name: Default
       delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
