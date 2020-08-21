@@ -5,9 +5,10 @@
   tasks:
     - name: run approval rule
       win_dsc:
-        resource_name: UpdateServicesApprovalRule 
+        resource_name: UpdateServicesDsc  #UpdateServicesApprovalRule 
         Ensure: yes
         Name: Default
+      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
     # - name: Install WSUS DSC modules
     #   win_psmodule:
     #     name: MSFT_UpdateServicesDsc 
