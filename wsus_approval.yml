@@ -5,7 +5,7 @@
   tasks:
     - name: Install WSUS DSC modules
       win_psmodule:
-        name: UpdateServicesDsc
+        name: UpdateServicesDsc 
         state: present
       delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
