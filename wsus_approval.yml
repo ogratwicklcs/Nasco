@@ -3,7 +3,15 @@
   hosts: wsus
   gather_facts: yes
   tasks:
+      # - name: Setup the xWebAdministration module
+    #   win_psmodule:
+    #     name: UpdateServicesDsc
+    #     state: latest
+    #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
+    - name: Make sure servers in WSUS Target group
+      win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
+      loop: "{{ groups['patching'] }}"
 
     - name: run approval rule
       win_dsc:
@@ -15,29 +23,7 @@
         Enabled: true
         RunRuleNow: true
         ComputerGroups: "{{ wsus_target_group | default('test01')}}" 
-      #delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
-    # - name: Setup the xWebAdministration module
-    #   win_psmodule:
-    #     name: UpdateServicesDsc
-    #     state: latest
-    #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
-
-    # - name: run approval rule
-    #   win_dsc:
-    #     resource_name: UpdateServicesApprovalRule 
-    #     Ensure: Present
-    #     Name: Default
-    #     #RunRuleNow: yes
-    #     Classifications: 
-    #       - Critical Updates
-    #       - Security Updates
-    #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
-
-    - name: Make sure servers in WSUS Target group
-      win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
-      loop: "{{ groups['patching'] }}"
-      #delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
     
 
 
