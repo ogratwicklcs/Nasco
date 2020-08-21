@@ -5,7 +5,12 @@
   tasks:
     - win_psmodule:
         name: UpdateServicesDsc
-        repostiroy: PSGallery
+        #repostiroy: PSGallery
+        state: latest
+      ignore_errors: yes
+    - win_psmodule:
+        name: UpdateServicesApprovalRule
+        #repostiroy: PSGallery
         state: latest
     - name: run approval rule
       win_dsc:
