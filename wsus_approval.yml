@@ -7,22 +7,19 @@
     - name: Setup the xWebAdministration module
       win_psmodule:
         name: UpdateServicesDsc
-        state: present
-
-
-
+        state: latest
+      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
     - name: run approval rule
       win_dsc:
         resource_name: UpdateServicesApprovalRule 
         Ensure: yes
         Name: Default
+        RunRuleNow: True
+        Classifications: 
+          - Critical Updates
+          - Security Updates
       delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
-    # - name: Install WSUS DSC modules
-    #   win_psmodule:
-    #     name: MSFT_UpdateServicesDsc 
-    #     state: present
-    #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
     - name: Make sure servers in WSUS Target group
       win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
