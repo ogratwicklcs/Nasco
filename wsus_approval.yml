@@ -4,22 +4,37 @@
   gather_facts: yes
   tasks:
 
+
+    - name: run approval rule
+      win_dsc:
+        resource_name: UpdateServicesApprovalRule 
+        Name: 'Critical Updates'
+        #RunRuleNow: yes
+        Classifications: E6CF1350-C01B-414D-A61F-263D14D133B4
+        Enabled: true
+        RunRuleNow: true
+      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
+
+
+
+
+
     # - name: Setup the xWebAdministration module
     #   win_psmodule:
     #     name: UpdateServicesDsc
     #     state: latest
     #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
-    - name: run approval rule
-      win_dsc:
-        resource_name: UpdateServicesApprovalRule 
-        Ensure: Present
-        Name: Default
-        #RunRuleNow: yes
-        Classifications: 
-          - Critical Updates
-          - Security Updates
-      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
+    # - name: run approval rule
+    #   win_dsc:
+    #     resource_name: UpdateServicesApprovalRule 
+    #     Ensure: Present
+    #     Name: Default
+    #     #RunRuleNow: yes
+    #     Classifications: 
+    #       - Critical Updates
+    #       - Security Updates
+    #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
     - name: Make sure servers in WSUS Target group
       win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
