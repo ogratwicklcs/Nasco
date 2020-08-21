@@ -1,6 +1,6 @@
 ---
 - name: Create Approval rule and add computers to new approval group
-  hosts: all
+  hosts: wsus
   gather_facts: yes
   tasks:
 
@@ -9,17 +9,13 @@
       win_dsc:
         resource_name: UpdateServicesApprovalRule 
         Name: 'Critical Updates'
-        #RunRuleNow: yes
         Classifications: 
         - E6CF1350-C01B-414D-A61F-263D14D133B4
         - 0FA1201D-4330-4FA8-8AE9-B877473B6441
         Enabled: true
         RunRuleNow: true
-      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
-
-
-
-
+        ComputerGroups: "{{ wsus_target_group | default('test01')}}" 
+      #delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
     # - name: Setup the xWebAdministration module
     #   win_psmodule:
@@ -41,7 +37,7 @@
     - name: Make sure servers in WSUS Target group
       win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
       loop: "{{ groups['patching'] }}"
-      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
+      #delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
     
 
 
