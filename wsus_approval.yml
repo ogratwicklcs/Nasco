@@ -4,11 +4,11 @@
   gather_facts: yes
   tasks:
 
-    - name: Setup the xWebAdministration module
-      win_psmodule:
-        name: UpdateServicesDsc
-        state: latest
-      delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
+    # - name: Setup the xWebAdministration module
+    #   win_psmodule:
+    #     name: UpdateServicesDsc
+    #     state: latest
+    #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
     - name: run approval rule
       win_dsc:
