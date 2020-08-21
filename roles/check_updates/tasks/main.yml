@@ -1,12 +1,46 @@
 ---
+- name: setting default value for reboot_timeout
+  set_fact: 
+    reboot_timeout: 3600
 - name: search for windows updates
   win_updates:
-    category_names:
-      - SecurityUpdates
-      - CriticalUpdates
+    category_names: "{{ patch_categories }}"
     state: searched
   register: win_updates
 
 - name: output win updates
   debug:
     var: win_updates
+
+- name: Install Windows updates
+  win_updates:
+    category_names: "{{ patch_categories }}"
+    reboot: "{{ reboot_vm | default('yes') }}"
+    reboot_timeout: "{{ reboot_timeout }}"
+  register: win_updates_result
+  failed_when: win_updates_result.failed is defined and win_updates_result.failed
+
+- name: list installed updates from first run
+  debug:
+    msg: "{{ win_updates_result.updates.kb }} {{ win_updates_result.updates.title }}"
+
+
+- name: Reboot and Retry
+  when: win_updates_result.msg is defined and win_updates_result.msg == "A reboot is required before more updates can be installed"
+  block:
+
+    - name: Reboot Windows to retry update installation
+      win_reboot:
+        reboot_timeout: "{{ reboot_timeout }}"
+
+    - name: Install Windows Updates Retry
+      win_updates:
+        category_names: "{{ patch_categories }}"
+        reboot: "{{ reboot_vm | default('yes') }}"
+        reboot_timeout: "{{ reboot_timeout }}"
+      failed_when: win_updates_result.failed is defined and win_updates_result.failed
+      register: win_updates_result_2
+- name: list installed updates from first run
+  debug:
+    msg: "{{ win_updates_result.updates.kb }} {{ win_updates_result.updates.title }}"
+
