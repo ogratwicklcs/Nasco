@@ -23,7 +23,7 @@
 - name: list installed updates from first run
   debug:
     msg: "{{ win_updates_result.updates.kb }} {{ win_updates_result.updates.title }}"
-
+  ignore_errors: yes
 
 - name: Reboot and Retry
   when: win_updates_result.msg is defined and win_updates_result.msg == "A reboot is required before more updates can be installed"

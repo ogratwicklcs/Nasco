@@ -1,5 +1,13 @@
 ---
 
+- name: check WSMan CredSSP status
+  win_shell: Get-ChildItem -path WSMan:\localhost\Service\Auth\CredSSP
+  register: wsman_credssp
+
+- name: check WSMan Basic status
+  win_shell: Get-ChildItem -path WSMan:\localhost\Service\Auth\Basic
+  register: wsman_credssp
+
 - name: Apply credssp transport cert and settings with Ansible script
   script:
     script: windows_transport.ps1 -EnableCredSSP
