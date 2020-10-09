@@ -43,7 +43,7 @@
       [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.UpdateServices.Administration")
       $updatescope = [Microsoft.UpdateServices.Administration.AdminProxy]::GetUpdateServer()
       $updatescope.PreferredCulture = "en"
-      $workgroup = {{ approved_group }}
+      $workgroup = "'{{ approved_group }}'"
       $wgroup = $updatescope.GetComputerTargetGroups() | where {$_.Name -eq $workgroup}
       $updates = $updatescope.GetUpdates() | ? {($_.PublicationState -ne "Expired" -and $_.MsrcSeverity -eq "Important" -or $_.MsrcSeverity -eq "Critical" -and $_.IsSuperseded -eq $false )} 
       $count = 0
