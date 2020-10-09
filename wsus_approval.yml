@@ -49,7 +49,7 @@
       $count = 0
       foreach ($update in $updates)
       {
-          $update.Approve("Install", $workgroup)
+          $update.Approve("Install", $wgroup)
       }
     register: approval_wsus
 
