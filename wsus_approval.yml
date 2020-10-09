@@ -9,21 +9,50 @@
     #     state: latest
     #   delegate_to: "{{ query('inventory_hostnames', 'wsus')[0] }}"
 
-    - name: Make sure servers in WSUS Target group
-      win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
-      loop: "{{ groups['patching'] }}"
+    # - name: Make sure servers in WSUS Target group
+    #   win_shell: Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ wsus_target_group | default('test01')}}
+    #   loop: "{{ groups['patching'] }}"
 
-    - name: run approval rule
-      win_dsc:
-        resource_name: UpdateServicesApprovalRule 
-        Name: 'Critical Updates'
-        Classifications: 
-        - E6CF1350-C01B-414D-A61F-263D14D133B4
-        - 0FA1201D-4330-4FA8-8AE9-B877473B6441
-        Enabled: true
-        RunRuleNow: true
-        ComputerGroups: "{{ wsus_target_group | default('test01')}}" 
+    # - name: run approval rule
+    #   win_dsc:
+    #     resource_name: UpdateServicesApprovalRule 
+    #     Name: 'Critical Updates'
+    #     Classifications: 
+    #     - E6CF1350-C01B-414D-A61F-263D14D133B4
+    #     - 0FA1201D-4330-4FA8-8AE9-B877473B6441
+    #     Enabled: true
+    #     RunRuleNow: true
+    #     ComputerGroups: "{{ wsus_target_group | default('test01')}}" 
 
     
 
+  - debug:
+      msg: Target group set for approval {{ approved_group }}
+      
+  - debug:
+      msg: Adding following servers to the group {{ groups[patching_group] }}
+
+  - name: Make sure servers in WSUS Target group
+    win_shell: 
+        Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ approved_group }}
+    loop: "{{ groups[patching_group] }}"
+
+  - name: Running shell for approvals for servers
+    win_shell: |
+      [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.UpdateServices.Administration")
+      $updatescope = [Microsoft.UpdateServices.Administration.AdminProxy]::GetUpdateServer()
+      $updatescope.PreferredCulture = "en"
+      $workgroup = {{ approved_group }}
+      $wgroup = $updatescope.GetComputerTargetGroups() | where {$_.Name -eq $workgroup}
+      $updates = $updatescope.GetUpdates() | ? {($_.PublicationState -ne "Expired" -and $_.MsrcSeverity -eq "Important" -or $_.MsrcSeverity -eq "Critical" -and $_.IsSuperseded -eq $false )} 
+      $count = 0
+      foreach ($update in $updates)
+      {
+          $update.Approve("Install", $workgroup)
+      }
+    register: approval_wsus
+
+  - name: Output of approval 
+    debug:
+      var: approval_wsus
 

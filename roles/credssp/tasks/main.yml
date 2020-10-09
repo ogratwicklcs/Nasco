@@ -6,9 +6,8 @@
 
 - name: check WSMan Basic status
   win_shell: Get-ChildItem -path WSMan:\localhost\Service\Auth\Basic
-  register: wsman_credssp
+  register: wsman_basic
 
 - name: Apply credssp transport cert and settings with Ansible script
-  script:
-    script: windows_transport.ps1 -EnableCredSSP
-  become: yes
+  script: files/windows_transport.ps1 -EnableCredSSP -DisableBasicAuth  #-ForceNewSSLCert
+  when: "'false' in wsman_basic and 'false' in wsman_credssp"  

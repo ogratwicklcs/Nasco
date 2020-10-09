@@ -44,3 +44,15 @@
   debug:
     msg: "{{ win_updates_result.updates.kb }} {{ win_updates_result.updates.title }}"
 
+
+# $updatescope = [Microsoft.UpdateServices.Administration.AdminProxy]::GetUpdateServer()
+
+# $updatescope.PreferredCulture = "en"
+
+# $updates = $updatescope.GetUpdates() | ? {($_.CreationDate -gt "1/1/2020" -and $_.PublicationState -ne "Expired") -and ($_.ProductFamilyTitles -eq "Windows" -or $_.ProductFamilyTitles -eq "Office") -and ($_.UpdateClassificationTitle -eq "Security Updates" -or $_.UpdateClassificationTitle -eq "Critical Updates")} | select Title | Out-GridView
+
+# Write-Output $updates
+# #foreach ($update in $updates)
+# #{
+# #    write-host $update | select Title
+# #}  
