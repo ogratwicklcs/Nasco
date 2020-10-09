@@ -34,7 +34,7 @@
 
   - name: Make sure servers in WSUS Target group
     win_shell: 
-        Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName {{ approved_group }}
+        Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName \'{{ approved_group }}\'
     loop: "{{ groups[patching_group] }}"
 
   - name: Running shell for approvals for servers
