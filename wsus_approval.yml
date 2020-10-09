@@ -36,7 +36,7 @@
     win_shell: 
         Get-WsusComputer -NameIncludes {{ item }} | Add-WsusComputer -TargetGroupName '{{ approved_group }}'
     loop: "{{ groups[patching_group] }}"
-    ignore_error: yes
+    ignore_errors: yes
     
   - name: Running shell for approvals for servers
     win_shell: |
