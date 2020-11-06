@@ -1,0 +1,28 @@
+---
+ - hosts: jbossreport_insight_Hosts
+   tasks:
+   - name: Remove all temporory files of List Jboss servers
+     shell: /infrascripts/insight/JBossinfo/List_Jboss_Servers.sh remove
+     register: remove_output
+   - debug: var=remove_output.stdout_lines
+   
+ - hosts: jbosspull_insight_Hosts
+   tasks:
+   - name: Run List Jboss Servers to pull the jboss servers info
+     shell: /infrascripts/insight/JBossinfo/List_Jboss_Servers.sh pull
+     register: pull_output
+   - debug: var=pull_output.stdout_lines   
+
+ - hosts: jbossreport_insight_Hosts
+   tasks:
+   - name: Sort all temporory files of List Jboss servers
+     shell: /infrascripts/insight/JBossinfo/List_Jboss_Servers.sh sort
+     register: sort_output
+   - debug: var=sort_output.stdout_lines
+
+ - hosts: jbossreport_insight_Hosts
+   tasks:
+   - name: Report all temporory files of List Jboss servers
+     shell: /infrascripts/insight/JBossinfo/List_Jboss_Servers.sh report
+     register: report_output
+   - debug: var=report_output.stdout_lines
