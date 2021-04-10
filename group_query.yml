@@ -12,7 +12,7 @@
       validate_certs: False
       force_basic_auth: yes
       body_format: json
-    register: results
+    register: output
     
   - debug:
-      msg: "{{ results.results }}"
+      msg: "{{ output.results }}"
