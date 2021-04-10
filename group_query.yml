@@ -14,5 +14,8 @@
       body_format: json
     register: output
     
+  - set_fact:
+      new_var: "{{ output.json | json_query('results[*].name' }}"
+
   - debug:
-      msg: "{{ output.json.results | json_query[*].name }}"
+      msg: "{{ new_var }}"
