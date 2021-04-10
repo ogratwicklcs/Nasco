@@ -1,1 +1,14 @@
 ---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Add Suse to the Test_Suse Group
+    uri:
+      url: https://100.64.47.157/api/v2/inventories/2/hosts/
+      method: GET
+      user: ansibleadm
+      password: "{{user_pass}}"
+      body: '{ "name" : "?order_by=name" }'
+      validate_certs: False
+      force_basic_auth: yes
+      body_format: json
