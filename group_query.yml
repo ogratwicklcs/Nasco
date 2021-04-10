@@ -15,4 +15,4 @@
     register: output
     
   - debug:
-      msg: "{{ output.results }}"
+      msg: "{{ output.json.results }}"
