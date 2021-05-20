@@ -32,4 +32,4 @@
         msg: "Boot disk (/boot) has enough free space. Proceeding with OS patching on host."
 
     - debug:
-        msg: "{{ bootdisk_size| regex_replace('\\%$',''))|int }}"
+        msg: "{{ bootdisk_size| regex_replace('\\%$','')|int }}"
