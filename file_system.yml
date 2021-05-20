@@ -30,8 +30,6 @@
     - name: Print boot disk state
       debug:
         msg: "Boot disk (/boot) has enough free space. Proceeding with OS patching on host."
-      when: (bootdisk_size| regex_replace('\\%$',''))|int < 70|int
-    - debug:
-        msg: "{{ bootdisk_size| regex_replace('\\%$','')) }}"
+
     - debug:
         msg: "{{ bootdisk_size| regex_replace('\\%$',''))|int }}"
