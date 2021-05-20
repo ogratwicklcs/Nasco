@@ -17,7 +17,7 @@
         bootdisk_size: "{{ bootDisk_state.stdout_lines.0.split( )[4] }}"
     - debug:
         msg: "{{ bootdisk_size }}"
-        
+
     - name: Print boot disk state
       debug:
         msg: "Boot disk (/boot) doesn't have enough free space to proceed with OS patches. Free up some space from /boot to bring it under 70% and run the job again. Skipping patching on host."
@@ -31,5 +31,7 @@
       debug:
         msg: "Boot disk (/boot) has enough free space. Proceeding with OS patching on host."
       when: (bootdisk_size| regex_replace('\\%$',''))|int < 70|int
-
-   
+    - debug:
+        msg: "{{ bootdisk_size| regex_replace('\\%$','')) }}"
+    - debug:
+        msg: "{{ bootdisk_size| regex_replace('\\%$',''))|int }}"
