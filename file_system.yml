@@ -1,0 +1,35 @@
+---
+- hosts: all
+ # remote_user: ansible
+ # become: yes
+  tasks:
+
+    - name: Check boot disk
+      shell: | 
+            df -h | grep '/boot' > /home/ansible/patch.log 
+            df -h | grep '/boot'
+      register: bootDisk_state
+    - name: Debug task (Check boot disk)
+      debug:
+        var: bootDisk_state.stdout_lines
+
+    - set_fact:
+        bootdisk_size: "{{ bootDisk_state.stdout_lines.0.split( )[4] }}"
+    - debug:
+        msg: "{{ bootdisk_size }}"
+        
+    - name: Print boot disk state
+      debug:
+        msg: "Boot disk (/boot) doesn't have enough free space to proceed with OS patches. Free up some space from /boot to bring it under 70% and run the job again. Skipping patching on host."
+      when: (bootdisk_size| regex_replace('\\%$',''))|int >= 70|int
+
+    - name: Skip patching host if /boot >= 70%
+      meta: end_host
+      when: (bootdisk_size| regex_replace('\\%$',''))|int >= 70|int
+
+    - name: Print boot disk state
+      debug:
+        msg: "Boot disk (/boot) has enough free space. Proceeding with OS patching on host."
+      when: (bootdisk_size| regex_replace('\\%$',''))|int < 70|int
+
+   
