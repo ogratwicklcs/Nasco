@@ -23,7 +23,7 @@
         msg: "Boot disk (/boot) doesn't have enough free space to proceed with OS patches. Free up some space from /boot to bring it under 70% and run the job again. Skipping patching on host."
       when: (bootdisk_size| regex_replace('\\%$',''))|int >= 30|int
 
-    - name: 'Skip patching host if /boot >= 70%' 
+    - name: Skip patching host if '((/boot >=70%))'
       meta: end_host
       when: (bootdisk_size| regex_replace('\\%$',''))|int >= 30|int
 
